@@ -66,19 +66,19 @@ if __name__ == '__main__':
 		print "Button 27 pressed, quit"
 		motor.stop_motor()
 
-	PWM_CHANNEL = 24
+	PWM_CHANNEL = 13
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 	GPIO.add_event_detect(27, GPIO.FALLING, callback = GPIO27_callback, bouncetime = 300)
 
 	motor = pwm_motor(channel = PWM_CHANNEL)
-	motor.change_speed(-10)
-	motor.print_states()
-	time.sleep(5)
-	motor.change_speed(5)
-	motor.print_states()
-	time.sleep(5)
-	motor.stop_motor()
+	motor.change_speed(0)
+	# motor.print_states()
+	time.sleep(100)
+	# motor.change_speed(5)
+	# motor.print_states()
+	# time.sleep(5)
+	# motor.stop_motor()
 
 
 
