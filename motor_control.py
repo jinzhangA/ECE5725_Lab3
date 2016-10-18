@@ -1,3 +1,8 @@
+# Lab3 code
+# Zhuo Chen zc292
+# Rui Min rm977
+
+
 import RPi.GPIO as GPIO
 import time
 
@@ -66,8 +71,7 @@ class pwm_motor():
 		# stop the motor safely and clean the GPIO
 		self.change_speed(0)
 		self.pwm.stop()
-		time.sleep(0.1)
-		GPIO.cleanup()
+		# GPIO.cleanup()
 
 	def print_states(self):
 		# debug tools, to display all the important info

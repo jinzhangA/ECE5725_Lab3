@@ -10,6 +10,7 @@ from motor_control import pwm_motor
 def GPIO27_callback(channel):
 	print "Button 27 pressed, quit"
 	motor.stop_motor()
+	GPIO.cleanup()
 	exit()
 
 

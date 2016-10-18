@@ -57,6 +57,7 @@ while True:
 	except KeyboardInterrupt:
 		left_wheel.terminate()
 		right_wheel.terminate()
+		GPIO.cleanup()
 		exit()
 
 
