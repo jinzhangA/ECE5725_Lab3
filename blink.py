@@ -1,25 +1,19 @@
+# Lab3 code
+# Zhuo Chen zc292
+# Rui Min rm977
 import RPi.GPIO as GPIO
-import subprocess
 import time
 
+CHANNEL = 22
+
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-previous_27 = 0
-GPIO.setup(24, GPIO.OUT)
+GPIO.setup(CHANNEL, GPIO.OUT)
 
-def GPIO27_callback(channel):
-    print "Button 27 pressed, quit"
-    p.stop()
-    GPIO.cleanup()
-    exit()
-
-GPIO.add_event_detect(27, GPIO.FALLING, callback = GPIO27_callback, bouncetime = 300)
-
-channel = 24
+# here the frequency has been changed to different value during the test
+# frequency = 1
 frequency = 500
-
-p = GPIO.PWM(channel, frequency)
-p.start(99)
-time.sleep(10)
+p = GPIO.PWM(CHANNEL, frequency)
+p.start(50)
+time.sleep(100)
 p.stop()
 GPIO.cleanup()
