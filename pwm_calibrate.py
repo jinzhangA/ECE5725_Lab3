@@ -1,8 +1,12 @@
+# Lab3 code
+# Zhuo Chen zc292
+# Rui Min rm977
+
 import RPi.GPIO as GPIO
 import time
 from motor_control import pwm_motor
 
-# use button to exit the program
+# use button 27 to exit the program
 def GPIO27_callback(channel):
 	print "Button 27 pressed, quit"
 	motor.stop_motor()

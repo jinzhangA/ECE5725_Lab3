@@ -9,7 +9,16 @@ class pwm_motor():
 				 base_pulse = 20, 
 				 step_number = 10):
 
-		
+		# period = base_pulse + pulse
+		# frequency = 1/period
+		# duty cycle = pulse/period
+
+		# As discribed on the datasheet, when pulse is 1.5ms, the motor
+		# 	should stopped.
+		# When pulse is 1.3, the motor should running clockwise at full speed.
+		# When pulse is 1.7, the motor should running counter_clockwise at full speed.
+		# At each direction, the speed is divided into 10 stages.
+		# 	then the speed can be changed by adding intervals to the base pulse
 		self.channel = channel
 		GPIO.setup(self.channel, GPIO.OUT)
 		self.base_pulse = base_pulse
@@ -19,36 +28,45 @@ class pwm_motor():
 		self.pulse_interval = (center_pulse - f_clkwise_pulse)/step_number
 		self.current_stage = 0
 		self.pulse = 0
-		frequency, duty_cycle = self.get_frequency_dutycycle(self.current_stage)
-		# print frequency, duty_cycle
 
+		# get the frequency and duty cycle for 0 speed
+		frequency, duty_cycle = self.get_frequency_dutycycle(self.current_stage)
+
+		# start the pwm with given paramenter.
 		self.pwm = GPIO.PWM(self.channel, frequency)
 		self.pwm.start(duty_cycle)
 
 	def get_frequency_dutycycle(self, stage):
+		# period = base_pulse + pulse
+		# frequency = 1/period
+		# duty cycle = pulse/period
 		self.pulse = self.center_pulse + stage*self.pulse_interval
-		# print(self.pulse)
 		period = self.base_pulse + self.pulse
+
+		# Notice, the unit is 1ms, so using 1000 instead of 1
 		duty_cycle = 100 * self.pulse / period
 		freq = 1000 / period
-		# print pulse, freq, duty_cycle
 		return freq, duty_cycle
 
 	def change_speed(self, stage):
+		# if wrong stage is assigned, change is to 0 for safty.
 		if stage > 10 or stage < -10:
 			print "Input stage %d, should be within [-10, 10]"%(stage)
+			stage = 0
 		self.current_stage = stage
 		frequency, duty_cycle = self.get_frequency_dutycycle(self.current_stage)
 		self.pwm.ChangeDutyCycle(duty_cycle)
 		self.pwm.ChangeFrequency(frequency)
 
 	def stop_motor(self):
+		# stop the motor safely and clean the GPIO
 		self.change_speed(0)
 		self.pwm.stop()
 		time.sleep(0.1)
 		GPIO.cleanup()
 
 	def print_states(self):
+		# debug tools, to display all the important info
 		frequency, duty_cycle = self.get_frequency_dutycycle(self.current_stage)
 		if self.current_stage == 0:
 			stage = 'Stopped'
@@ -59,26 +77,6 @@ class pwm_motor():
 		print "current stage: %s %d, frequency: %.3f, duty cycle: %.3f, pulse: %.3f"\
 		%(stage, abs(self.current_stage), frequency, duty_cycle, self.pulse)
 
-
-
-if __name__ == '__main__':
-	def GPIO27_callback(channel):
-		print "Button 27 pressed, quit"
-		motor.stop_motor()
-
-	PWM_CHANNEL = 13
-	GPIO.setmode(GPIO.BCM)
-	GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-	GPIO.add_event_detect(27, GPIO.FALLING, callback = GPIO27_callback, bouncetime = 300)
-
-	motor = pwm_motor(channel = PWM_CHANNEL)
-	motor.change_speed(0)
-	# motor.print_states()
-	time.sleep(100)
-	# motor.change_speed(5)
-	# motor.print_states()
-	# time.sleep(5)
-	# motor.stop_motor()
 
 
 
