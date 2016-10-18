@@ -48,6 +48,10 @@ class pwm_motor():
 		freq = 1000 / period
 		return freq, duty_cycle
 
+	# the speed stage is defined as 21 stages
+	# the [1, 10] is defined as counter-clockwise
+	# the [-1, -10] is defined as clockwise
+	# 0 is stop
 	def change_speed(self, stage):
 		# if wrong stage is assigned, change is to 0 for safty.
 		if stage > 10 or stage < -10:

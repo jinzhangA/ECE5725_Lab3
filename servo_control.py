@@ -20,14 +20,14 @@ GPIO.add_event_detect(27, GPIO.FALLING, callback = GPIO27_callback, bouncetime =
 
 motor = pwm_motor(channel = PWM_CHANNEL)
 
-# speed change in stage [0, 10]
-for speed in range(0, 11):
+# speed change in stage [0, -10]
+for speed in range(0, -11, -1):
 	motor.change_speed(speed)
 	motor.print_states()
 	time.sleep(3)
 
-# speed change in stage [0, -10]
-for speed in range(0, -11, -1):
+# speed change in stage [0, 10]
+for speed in range(0, 11):
 	motor.change_speed(speed)
 	motor.print_states()
 	time.sleep(3)
