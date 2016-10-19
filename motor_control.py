@@ -2,7 +2,6 @@
 # Zhuo Chen zc292
 # Rui Min rm977
 
-
 import RPi.GPIO as GPIO
 import time
 
@@ -84,8 +83,3 @@ class pwm_motor():
 			stage = 'clockwise'
 		print "current stage: %s %d, frequency: %.3f, duty cycle: %.3f, pulse: %.3f"\
 		%(stage, abs(self.current_stage), frequency, duty_cycle, self.pulse)
-
-
-
-
-

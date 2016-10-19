@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
 from motor_control import pwm_motor
+from datetime import datetime
+
 class Wheel():
 	def __init__ (self, left_right, channel):
 		if left_right == 'left':
@@ -34,7 +36,8 @@ class Wheel():
 		self.speed = 0
 
 	def get_state(self, print_it = False):
-		status = "%s %s %d"%(self.left_right, self.state, self.speed)
+		the_time = datetime.now().strftime('%H:%M:%S')
+		status = "%s: %s %s %d"%(the_time, self.left_right, self.state, self.speed)
 		if print_it:
 			print status
 		return status
